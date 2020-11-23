@@ -11,7 +11,7 @@ class KnowledgeGraph:
 
         # Add weighted edges to the graph
         for line in edge_file:
-            line.strip()
+            line = line.strip('\n')
             head, tail, weight = line.split(' ')
             int(weight)
             #print(head,tail,weight)
@@ -27,9 +27,6 @@ class KnowledgeGraph:
         nx.draw(DG, with_labels=True,**options)
         graph_image = plt.gcf()
         graph_image.set_size_inches(18.5, 10.5)
-        graph_image.savefig("knowledge_graph1.png",dpi=500)
+        graph_image.savefig("knowledge_graph.png",dpi=500)
 
-
-if __name__=="__main__":
-    graph = KnowledgeGraph()
-    graph.build_graph()
+        return DG
