@@ -73,17 +73,3 @@ def  get_parent_nodes(node, graph):
     for pn in pnodes:
         parent_nodes[pn] = graph[pn][node]['weight']
     return parent_nodes
-
-
-if __name__=="__main__":
-    graph = KnowledgeGraph()
-    kn_graph = graph.build_graph()
-
-    activations = get_instinctive_activations('tangy_smell', kn_graph)
-    print(activations)
-    observations = get_observations('spoon', kn_graph)
-    print(observations)
-
-    if is_dangling_node('has_rim',kn_graph) == True :
-        parent_nodes = get_parent_nodes('has_rim',kn_graph)
-        print(parent_nodes)
