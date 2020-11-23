@@ -53,6 +53,28 @@ def get_observations(node,graph):
     return observations
 
 
+def is_dangling_node(node, graph):
+    '''
+        Finds if a node is
+        dangling( node with no outgoing edge).
+    '''
+    if len(list(graph.successors(node))) == 0:
+        return True
+    return False
+
+
+def  get_parent_nodes(node, graph):
+    '''
+        Returns parent nodes of a node
+    '''
+    parent_nodes = {}
+    pnodes = list(graph.predecessors(node))
+
+    for pn in pnodes:
+        parent_nodes[pn] = graph[pn][node]['weight']
+    return parent_nodes
+
+
 if __name__=="__main__":
     graph = KnowledgeGraph()
     kn_graph = graph.build_graph()
@@ -61,3 +83,7 @@ if __name__=="__main__":
     print(activations)
     observations = get_observations('spoon', kn_graph)
     print(observations)
+
+    if is_dangling_node('has_rim',kn_graph) == True :
+        parent_nodes = get_parent_nodes('has_rim',kn_graph)
+        print(parent_nodes)
