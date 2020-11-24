@@ -24,7 +24,7 @@ def main():
 		observations_for_given_level = {}
 		predictions_for_given_level = {}
 		instinctive_reactions_for_given_level = {}
-		object_recognitions_for_given_level = {}
+		object_recognitions_for_given_level = set()
 
 		# new_inputs the user has entered
 		new_inputs = sensory_inputs.strip().split(' ')
@@ -38,9 +38,11 @@ def main():
 		'''
 		for new_sensory_input in new_inputs:
 			if is_dangling_node(new_sensory_input, graph):
-				object_recognitions_for_given_level.update(get_parent_nodes(new_sensory_input, graph))
-
-		object_recognized.update(object_recognitions_for_given_level)
+				possible_recognitions = get_parent_nodes(new_sensory_input, graph)
+				if len(object_recognitions_for_given_level) == 0:
+					object_recognitions_for_given_level = possible_recognitions
+				else:
+					object_recognitions_for_given_level = object_recognitions_for_given_level.intersection(possible_recognitions)
 
 		# For each input get activations, observations and predictions
 		for sensory_input in inputs:
