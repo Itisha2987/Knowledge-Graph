@@ -54,18 +54,11 @@ def get_observations(node, graph):
     results = {}
     while queue:
         if l > level:
-            return observations, results
+            return observations
         size = len(queue)
         
         for i in range(size):
             n = queue.pop(0)
-            if is_dangling_node(n, graph):
-                parents = get_parent_nodes(n, graph)
-                if not results:
-                    results = parents
-                else:
-                    results.update(parents)
-            # print(results)
             for s in list(graph.successors(n)):
                 edge_weight = int(graph[n][s]['weight'])
                 # edge weight 2 implies inference while edge weight 3 implies deductions.
@@ -76,5 +69,17 @@ def get_observations(node, graph):
                         observations[s] = int(graph[n][s]['weight'])
 
         l = l+1
-    # print(observations, results)
-    return (observations, results)
+
+    return observations
+
+
+def seperate_observations_and_predictions(input_observations):
+    observations = {}
+    predictions = {}
+    for key,value in input_observations:
+        if value==2:
+            predictions.update({key:value})
+        else:
+            observations.update({key:value})
+
+    return observations, predictions
