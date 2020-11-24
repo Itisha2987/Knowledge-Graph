@@ -76,7 +76,8 @@ def get_observations(node, graph):
 def seperate_observations_and_predictions(input_observations):
     observations = {}
     predictions = {}
-    for key,value in input_observations:
+    for key in input_observations:
+        value = input_observations[key]
         if value==2:
             predictions.update({key:value})
         else:
