@@ -12,12 +12,7 @@ def  get_parent_nodes(node, graph):
     '''
         Returns parent nodes of a node
     '''
-    parent_nodes = {}
-    pnodes = list(graph.predecessors(node))
-
-    for pn in pnodes:
-        parent_nodes[pn] = graph[pn][node]['weight']
-    return parent_nodes
+    return set(graph.predecessors(node))
 
 
 def get_instinctive_activations(node, graph):
@@ -74,6 +69,10 @@ def get_observations(node, graph):
 
 
 def seperate_observations_and_predictions(input_observations):
+    '''
+        Returns list of predictions
+        and observations.
+    '''
     observations = {}
     predictions = {}
     for key in input_observations:
