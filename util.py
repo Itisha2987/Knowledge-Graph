@@ -83,3 +83,18 @@ def seperate_observations_and_predictions(input_observations):
             observations.update({key:value})
 
     return observations, predictions
+
+
+def get_intersection_set_of_recognitions(recognitions, possible_recognitions):
+    '''
+        Given the recognition set and new possible recognition set,
+        this function returns the intersection amongst them.
+    '''
+
+    # If reocgnitions are None, then set possible recognitions as recognitions
+    if len(recognitions) == 0:
+        recognitions = possible_recognitions
+    else:
+        recognitions = recognitions.intersection(possible_recognitions)
+
+    return recognitions
