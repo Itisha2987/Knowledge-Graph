@@ -1,32 +1,32 @@
-hot dont_touch 3
-hot use_something 2
-hot fight_or_flight 1
-dont_touch use_something 3
-tangy_smell eager_to_taste 0
-tangy_smell salivation 1
-tangy_smell food_item 2
-tangy_smell temptation 0
-spoon use_something 2
-spoon dips_easily 2
-dips_easily liquid 3
-water no_taste 3
-water no_smell 3
-water liquid 3
-drinking_glass solid 3
-drinking_glass cylindrical 2
-drinking_glass has_rim 3
-bowl has_rim 3
-bowl hemispherical 2
-bowl solid 3
-bowl medium 2
-bowl has_something 2
-has_something food_item 2
-has_something non_food_item 2
-tomato_soup liquid 3
-tomato_soup food_item 3
-tomato_soup has_tomatoes 3
-tomato_soup spicy 3
-tomato_soup tangy_smell 3
-tomato_soup tangy_taste 3
-tangy_taste has_tomatoes 2
-tangy_taste spicy 2
+hot dont_touch 3 0.5 1
+hot use_something 2 0.5 1
+hot fight_or_flight 1 0.5 1
+dont_touch use_something 3 0.5 1
+tangy_smell eager_to_taste 0 0.5 1
+tangy_smell salivation 1 0.5 1
+tangy_smell food_item 2 0.5 1
+tangy_smell temptation 0 0.5 1
+spoon use_something 2 0.5 1
+spoon dips_easily 2 0.5 1
+dips_easily liquid 3 0.5 1
+water no_taste 3 0.5 1
+water no_smell 3 0.5 1
+water liquid 3 1 1
+drinking_glass solid 3 0.5 1
+drinking_glass cylindrical 2 0.5 1
+drinking_glass has_rim 3 0.5 1
+bowl has_rim 3 0.5 1
+bowl hemispherical 2 0.5 1
+bowl solid 3 0.5 1
+bowl medium 2 0.5 1
+bowl has_something 2 0.5 1
+has_something food_item 2 0.5 1
+has_something non_food_item 2 0.5 1
+tomato_soup liquid 3 0.5 1
+tomato_soup food_item 3 0.5 1
+tomato_soup has_tomatoes 3 0.5 1
+tomato_soup spicy 3 0.5 1
+tomato_soup tangy_smell 3 0.5 1
+tomato_soup tangy_taste 3 0.5 1
+tangy_taste has_tomatoes 2 0.5 1
+tangy_taste spicy 2 0.5 1

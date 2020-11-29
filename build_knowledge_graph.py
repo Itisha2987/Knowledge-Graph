@@ -10,14 +10,27 @@ class KnowledgeGraph:
         DG = nx.DiGraph()
 
         # Add weighted edges to the graph
+        threshold_attributes = {}
         for line in edge_file:
             line = line.strip('\n')
-            head, tail, weight = line.split(' ')
+            head, tail, weight, alpha, beta = line.split(' ')
             int(weight)
-            #print(head,tail,weight)
+            float(alpha)
+            float(beta)
             DG.add_weighted_edges_from([(head,tail, weight)])
 
+            # alpha - Minimum threshold of an edge
+            # beta  - Maximum threshold of an edge
+            threshold_attributes[(head, tail)] = {"alpha":alpha,"beta":beta}
 
+
+        # Adding Threshold attributes of each edge to the graph
+        nx.set_edge_attributes(DG, threshold_attributes)
+
+        # Testing Alpha-Beta Values
+        # print("Water-Liquid\nAlpha: " + str(DG["water"]["liquid"]["alpha"]) + "\nBeta: " + str(DG["water"]["liquid"]["beta"]))
+        # print("Water-Liquid\nAlpha: " + str(DG["bowl"]["has_rim"]["alpha"]) + "\nBeta: " + str(DG["bowl"]["has_rim"]["beta"]))
+        
         # Drawing graph as image "knowledge_graph.png"
         options = {
             'node_color': 'blue',
