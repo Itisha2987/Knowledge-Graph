@@ -3,6 +3,7 @@ def is_dangling_node(node, graph):
         Finds if a node is
         dangling( node with no outgoing edge).
     '''
+    node = node.split(':')[0]
     if len(list(graph.successors(node))) == 0:
         return True
     return False
@@ -12,6 +13,7 @@ def  get_parent_nodes(node, graph):
     '''
         Returns parent nodes of a node
     '''
+    node = node.split(':')[0]
     return set(graph.predecessors(node))
 
 

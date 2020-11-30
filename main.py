@@ -40,10 +40,13 @@ def main():
 		}
 		
 		for i in range(len(new_inputs)):
-			# get the sense of input (V/T/O/G/A)
-			sense, new_input, intensity = new_inputs[i].split(':')
+			# Input Format:
+			# T:hot:0.7 O:tangy_smell:0.7
 
-			# Update new inputs by removing sensory tags
+			# get the sense of input (V/T/O/G/A), intensity by splitting up
+			sense = new_inputs[i].split(':')[0]
+
+			# Update new inputs by removing only sensory tags (still contains intensity value)
 			new_inputs[i] = new_inputs[i][2:]
 			
 			if sense == 'V':
@@ -72,7 +75,6 @@ def main():
 			sensory_level_recognition = set()
 			if input_set[senses]:
 				for node in input_set[senses]:
-					node = node.split(':')[0]
 					if is_dangling_node(node, graph):
 						possible_recognitions = get_parent_nodes(node, graph)
 						sensory_level_recognition = get_intersection_set_of_recognitions(sensory_level_recognition, possible_recognitions)
@@ -99,7 +101,7 @@ def main():
 			observations_for_given_level.update(raised_observations)
 
 		# Adding old observations to input set
-		# inputs = list(observations_for_given_level)
+		# TODO. Need to figure out proper way for appending threshold value
 		inputs = [observation+":1" for observation in list(observations_for_given_level)]
 
 		# Separating observations and predictions and updating their final set
