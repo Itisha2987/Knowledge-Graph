@@ -51,7 +51,7 @@ def get_observations(node, graph):
     queue.append(node)
     observations = {}
     l = 1
-    results = {}
+
     while queue:
         if l > level:
             return observations
