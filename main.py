@@ -41,7 +41,7 @@ def main():
 		
 		for i in range(len(new_inputs)):
 			# get the sense of input (V/T/O/G/A)
-			sense = new_inputs[i][0]
+			sense, new_input, intensity = new_inputs[i].split(':')
 
 			# Update new inputs by removing sensory tags
 			new_inputs[i] = new_inputs[i][2:]
@@ -72,6 +72,7 @@ def main():
 			sensory_level_recognition = set()
 			if input_set[senses]:
 				for node in input_set[senses]:
+					node = node.split(':')[0]
 					if is_dangling_node(node, graph):
 						possible_recognitions = get_parent_nodes(node, graph)
 						sensory_level_recognition = get_intersection_set_of_recognitions(sensory_level_recognition, possible_recognitions)
@@ -80,8 +81,7 @@ def main():
 
 		# Update the object recognized
 		object_recognized.update(object_recognitions_for_given_level)
-		
-				
+
 
 		# adding new user inputs in inputs set
 		inputs.extend(new_inputs)
@@ -99,7 +99,8 @@ def main():
 			observations_for_given_level.update(raised_observations)
 
 		# Adding old observations to input set
-		inputs = list(observations_for_given_level)
+		# inputs = list(observations_for_given_level)
+		inputs = [observation+":1" for observation in list(observations_for_given_level)]
 
 		# Separating observations and predictions and updating their final set
 		observations_for_given_level, predictions_for_given_level = seperate_observations_and_predictions(observations_for_given_level)

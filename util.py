@@ -20,14 +20,17 @@ def get_instinctive_activations(node, graph):
         Returns instinctive activations
         and emotional arousals from a node.
     '''
+    node, intensity = node.split(':')
     activations = {}
     successor = list(graph.successors(node))
     
     for s in successor:
+        alpha = graph[node][s]["alpha"]
+        beta = graph[node][s]["beta"]
         edge_weight = int(graph[node][s]['weight'])
 
         # Edge weight 0 implies emotional arousal and weight 1 implies activation.
-        if edge_weight == 0 or edge_weight == 1:
+        if intensity >= alpha and intensity <= beta and (edge_weight == 0 or edge_weight == 1):
             activations[s] = edge_weight
 
     return activations
@@ -39,7 +42,7 @@ def get_observations(node, graph):
         and deductions from the given node,
         usign bfs traversal.
     '''
-
+    node, intensity = node.split(':')
     # Set level of traversal as 2.
     level = 2
     queue = []
@@ -56,8 +59,10 @@ def get_observations(node, graph):
             n = queue.pop(0)
             for s in list(graph.successors(n)):
                 edge_weight = int(graph[n][s]['weight'])
+                alpha = graph[node][s]["alpha"]
+                beta = graph[node][s]["beta"]
                 # edge weight 2 implies inference while edge weight 3 implies deductions.
-                if edge_weight == 2 or edge_weight == 3:
+                if intensity >= alpha and intensity <= beta and (edge_weight == 2 or edge_weight == 3):
                     queue.append(s)
                     # add observation if not already included or is an inference.
                     if s not in observations or observations[s] == 2:
