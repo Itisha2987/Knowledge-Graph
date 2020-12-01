@@ -3,6 +3,7 @@ def lie_within_the_range(intensity,head,tail,graph):
         Checks if the intensity lies within
         the threshold range.
     '''
+    intensity = float(intensity)
     alpha = graph[head][tail]["alpha"]
     beta = graph[head][tail]["beta"]
 
