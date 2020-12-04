@@ -5,6 +5,7 @@ from util import is_dangling_node
 from util import get_parent_nodes
 from util import seperate_observations_and_predictions
 from util import get_intersection_set_of_recognitions
+from util import preprocess_input
 
 
 def main():
@@ -46,9 +47,9 @@ def main():
 
 			# get the sense of input (V/T/O/G/A), intensity by splitting up
 			sense, new_input, intensity = new_inputs[i].split(':')
-
+			new_input = preprocess_input(new_input)
 			# Update new inputs by removing only sensory tags (still contains intensity value)
-			new_inputs[i] = new_inputs[i][2:]
+			new_inputs[i] = new_input + ':' + intensity
 
 			if new_input not in graph:
 				not_in_graph_inputs.add(new_input)
