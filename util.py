@@ -1,3 +1,7 @@
+def preprocess_input(sensory_input):
+    return sensory_input.lower().replace(' ', '_')
+
+
 def lie_within_the_range(intensity,head,tail,graph):
     '''
         Checks if the intensity lies within
@@ -10,6 +14,7 @@ def lie_within_the_range(intensity,head,tail,graph):
     if intensity >= alpha and intensity <= beta:
         return True
     return False
+
 
 def is_dangling_node(node, graph):
     '''
@@ -120,3 +125,15 @@ def get_intersection_set_of_recognitions(recognitions, possible_recognitions):
         recognitions = recognitions.intersection(possible_recognitions)
 
     return recognitions
+
+
+# def main():
+#     inp = input()
+#     while(inp != "exit"):
+#         inp = preprocess_input(inp)
+#         print(inp)
+#         inp = input()
+
+
+# if __name__ == '__main__':
+#     main()

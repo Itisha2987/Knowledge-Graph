@@ -26,6 +26,7 @@ def main():
 		predictions_for_given_level = {}
 		instinctive_reactions_for_given_level = {}
 		object_recognitions_for_given_level = set()
+		not_in_graph_inputs = set()
 
 		# new_inputs the user has entered
 		new_inputs = sensory_inputs.strip().split(' ')
@@ -44,10 +45,14 @@ def main():
 			# T:hot:0.7 O:tangy_smell:0.7
 
 			# get the sense of input (V/T/O/G/A), intensity by splitting up
-			sense = new_inputs[i].split(':')[0]
+			sense, new_input, intensity = new_inputs[i].split(':')
 
 			# Update new inputs by removing only sensory tags (still contains intensity value)
 			new_inputs[i] = new_inputs[i][2:]
+
+			if new_input not in graph:
+				not_in_graph_inputs.add(new_input)
+				continue
 			
 			if sense == 'V':
 				sense = "vision"
@@ -86,6 +91,10 @@ def main():
 
 
 		# adding new user inputs in inputs set
+		for elem in new_inputs:
+			if elem.split(':')[0] in not_in_graph_inputs:
+				new_inputs.remove(elem)
+
 		inputs.extend(new_inputs)
 
 		# For each input get activations, observations and predictions
@@ -123,6 +132,9 @@ def main():
 	print("---------------------------------------------------")
 	print("Final Object Recognized \n", object_recognized)
 	print("---------------------------------------------------")
+
+	print("Following are the new inputs that you entered and were not in the graph. Please add the necessary edges (Deductions/Inferences) for the input")
+	print(not_in_graph_inputs)
 
 
 if __name__ == "__main__":
