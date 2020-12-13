@@ -125,15 +125,3 @@ def get_intersection_set_of_recognitions(recognitions, possible_recognitions):
         recognitions = recognitions.intersection(possible_recognitions)
 
     return recognitions
-
-
-# def main():
-#     inp = input()
-#     while(inp != "exit"):
-#         inp = preprocess_input(inp)
-#         print(inp)
-#         inp = input()
-
-
-# if __name__ == '__main__':
-#     main()
