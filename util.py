@@ -129,17 +129,3 @@ def get_intersection_set_of_recognitions(recognitions, possible_recognitions):
         recognitions = recognitions.intersection(possible_recognitions)
 
     return recognitions
-
-
-def get_most_similar_element(new_object):
-    data = get_all_objects()
-    objects = data['objects']
-    objects = convert_data_to_objects(objects)
-    highest_similarity = 0
-    for element in objects:
-        similarity = element.get_similarity_index(new_object)
-        if similarity > highest_similarity:
-            highest_similarity = similarity
-            similar_object = element
-    if highest_similarity > 0.75:
-        return similar_object

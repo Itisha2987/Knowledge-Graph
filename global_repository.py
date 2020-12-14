@@ -1,5 +1,6 @@
 import json
 
+
 class Object:
     def __init__(self, name, state):
         self.name = name
@@ -18,13 +19,16 @@ class Object:
     def __str__(self):
         return self.name
 
+
 def convert_data_to_objects(data):
     pass
+
 
 def get_all_objects():
     with open('global_repo.json') as json_file: 
         data = json.load(json_file) 
         return data
+
 
 def add_object_in_global_repo(elem):
     data = get_all_objects() 
@@ -33,6 +37,7 @@ def add_object_in_global_repo(elem):
 
     with open('global_repo.json','w') as json_file: 
         json.dump(data, json_file, indent=2)
+
 
 def get_element_attributes():
     element_name = input("Enter the name of object: ")
@@ -52,8 +57,9 @@ def get_element_attributes():
 
     return elem
 
+
 def main():
-    
+
     element = get_element_attributes()
     add_object_in_global_repo(element)
 
