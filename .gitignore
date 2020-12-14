@@ -3,3 +3,4 @@ __pycache__/
 *.pyo
 knowledge_graph.png
 *.png
+*.json

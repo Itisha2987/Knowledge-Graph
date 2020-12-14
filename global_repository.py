@@ -18,12 +18,18 @@ class Object:
     def __str__(self):
         return self.name
 
+def convert_data_to_objects(data):
+    pass
 
-def add_object_in_global_repo(elem):
+def get_all_objects():
     with open('global_repo.json') as json_file: 
         data = json.load(json_file) 
-        object_array = data['objects'] 
-        object_array.append(elem.__dict__) 
+        object_array = data['objects']
+        return object_array
+
+def add_object_in_global_repo(elem):
+    object_array = get_all_objects() 
+    object_array.append(elem.__dict__) 
 
     with open('global_repo.json','w') as json_file: 
         json.dump(data, json_file, indent=2)
