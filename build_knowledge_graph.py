@@ -14,9 +14,9 @@ class KnowledgeGraph:
         for line in edge_file:
             line = line.strip('\n')
             head, tail, weight, alpha, beta = line.split(' ')
-            int(weight)
-            float(alpha)
-            float(beta)
+            weight = int(weight)
+            alpha = float(alpha)
+            beta = float(beta)
             DG.add_weighted_edges_from([(head,tail, weight)])
 
             # alpha - Minimum threshold of an edge

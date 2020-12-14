@@ -1,3 +1,21 @@
+def preprocess_input(sensory_input):
+    return sensory_input.lower().replace(' ', '_')
+
+
+def lie_within_the_range(intensity,head,tail,graph):
+    '''
+        Checks if the intensity lies within
+        the threshold range.
+    '''
+    intensity = float(intensity)
+    alpha = graph[head][tail]["alpha"]
+    beta = graph[head][tail]["beta"]
+
+    if intensity >= alpha and intensity <= beta:
+        return True
+    return False
+
+
 def is_dangling_node(node, graph):
     '''
         Finds if a node is
@@ -13,8 +31,13 @@ def  get_parent_nodes(node, graph):
     '''
         Returns parent nodes of a node
     '''
-    node = node.split(':')[0]
-    return set(graph.predecessors(node))
+    node, intensity = node.split(':')
+    predecessor_nodes = set(graph.predecessors(node))
+    for pnode in predecessor_nodes.copy():
+        if lie_within_the_range(intensity,pnode,node,graph) is False:
+            predecessor_nodes.remove(pnode)
+
+    return predecessor_nodes
 
 
 def get_instinctive_activations(node, graph):
@@ -27,12 +50,10 @@ def get_instinctive_activations(node, graph):
     successor = list(graph.successors(node))
     
     for s in successor:
-        alpha = graph[node][s]["alpha"]
-        beta = graph[node][s]["beta"]
         edge_weight = int(graph[node][s]['weight'])
 
         # Edge weight 0 implies emotional arousal and weight 1 implies activation.
-        if intensity >= alpha and intensity <= beta and (edge_weight == 0 or edge_weight == 1):
+        if lie_within_the_range(intensity,node,s,graph) and (edge_weight == 0 or edge_weight == 1):
             activations[s] = edge_weight
 
     return activations
@@ -61,10 +82,9 @@ def get_observations(node, graph):
             n = queue.pop(0)
             for s in list(graph.successors(n)):
                 edge_weight = int(graph[n][s]['weight'])
-                alpha = graph[node][s]["alpha"]
-                beta = graph[node][s]["beta"]
+                
                 # edge weight 2 implies inference while edge weight 3 implies deductions.
-                if intensity >= alpha and intensity <= beta and (edge_weight == 2 or edge_weight == 3):
+                if lie_within_the_range(intensity,node,s,graph) and (edge_weight == 2 or edge_weight == 3):
                     queue.append(s)
                     # add observation if not already included or is an inference.
                     if s not in observations or observations[s] == 2:
