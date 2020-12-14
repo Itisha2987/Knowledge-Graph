@@ -20,10 +20,6 @@ class Object:
         return self.name
 
 
-def convert_data_to_objects(data):
-    pass
-
-
 def get_all_objects():
     with open('global_repo.json') as json_file: 
         data = json.load(json_file) 
@@ -37,6 +33,13 @@ def add_object_in_global_repo(elem):
 
     with open('global_repo.json','w') as json_file: 
         json.dump(data, json_file, indent=2)
+
+
+def get_object_data_through_name(object_name):
+    data = get_all_objects()
+    for element in data["objects"]:
+        if element["name"] == object_name
+        return element
 
 
 def get_element_attributes():
