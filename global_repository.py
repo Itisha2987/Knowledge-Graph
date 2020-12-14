@@ -24,11 +24,11 @@ def convert_data_to_objects(data):
 def get_all_objects():
     with open('global_repo.json') as json_file: 
         data = json.load(json_file) 
-        object_array = data['objects']
-        return object_array
+        return data
 
 def add_object_in_global_repo(elem):
-    object_array = get_all_objects() 
+    data = get_all_objects() 
+    object_array = data['objects']
     object_array.append(elem.__dict__) 
 
     with open('global_repo.json','w') as json_file: 
