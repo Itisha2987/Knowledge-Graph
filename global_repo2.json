@@ -1,0 +1,15 @@
+{
+  "name": "gkdjgk",
+  "vision": {},
+  "tactile": {
+    "temperature": "hot",
+    "texture": "smooth"
+  },
+  "gustatory": {
+    "taste": "spicy"
+  },
+  "auditory": {},
+  "olfaction": {
+    "smell": "tangy_smell"
+  }
+}
