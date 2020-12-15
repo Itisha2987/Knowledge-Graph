@@ -38,8 +38,8 @@ def add_object_in_global_repo(elem):
 def get_object_data_through_name(object_name):
     data = get_all_objects()
     for element in data["objects"]:
-        if element["name"] == object_name
-        return element
+        if element["name"] == object_name:
+            return element
 
 
 def get_element_attributes():
@@ -50,7 +50,7 @@ def get_element_attributes():
     senses = ["tactile", "gustatory", "olfaction", "auditory", "vision"]
 
     for sense in senses:
-        object_properties = input("Enter the " + sense + "properties of the object (space seperated attribut:value): ")
+        object_properties = input("Enter the " + sense + " properties of the object (space seperated attribut:value): ")
         if object_properties=="":
             continue
         properties = object_properties.strip().split(' ')
