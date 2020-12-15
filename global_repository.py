@@ -1,4 +1,5 @@
 import json
+from util import preprocess_name
 
 
 class Object:
@@ -43,8 +44,8 @@ def get_object_data_through_name(object_name):
 
 
 def get_element_attributes():
-    element_name = input("Enter the name of object: ")
-    element_state = input("Enter the state of object: ")
+    element_name = preprocess_name(input("Enter the name of object: "))
+    element_state = preprocess_name(input("Enter the state of object: "))
     elem = Object(element_name, element_state)
 
     senses = ["tactile", "gustatory", "olfaction", "auditory", "vision"]
