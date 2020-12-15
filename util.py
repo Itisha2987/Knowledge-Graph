@@ -1,7 +1,3 @@
-from global_repository import get_all_objects
-from global_repository import convert_data_to_objects
-
-
 def preprocess_input(sensory_input):
     return sensory_input.lower().replace(' ', '_')
 
