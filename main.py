@@ -224,6 +224,11 @@ def main():
 	if nodes_added:
 		print("The following nodes were added into the knowledge graph using the given similarity:")
 		print(nodes_added)
+	elif not_in_graph_inputs:
+		print("The following input is not in our graph and no similar objects were found for it")
+		print(list(not_in_graph_inputs))
+	else:
+		pass
 
 	if observations:
 		print("---------------------------------------------------")
