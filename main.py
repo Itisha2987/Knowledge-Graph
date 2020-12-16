@@ -19,7 +19,7 @@ def remove_successors_that_are_property(successors, most_similar_object):
 		if node not in properties:
 			new_successors.append(node)
 	
-	return new_successors
+	return properties, new_successors
 
 
 def add_new_nodes_to_graph(not_in_graph_inputs, graph):
@@ -62,7 +62,7 @@ def add_new_nodes_to_graph(not_in_graph_inputs, graph):
 				# get all successors of the already existing object
 				successors = graph.successors(most_similar_object_name)
 
-				successors = remove_successors_that_are_property(successors, similar_object[1])
+				properties, successors = remove_successors_that_are_property(successors, similar_object[1])
 				
 				# edge_attributes to store the weight, alpha, beta values of the edge
 				edge_attributes = {}
@@ -79,8 +79,12 @@ def add_new_nodes_to_graph(not_in_graph_inputs, graph):
 					# Add edge_data to edge_attributes
 					edge_attributes[(node, successor)] = edge_data
 				
+				for property in properties:
+					graph.add_edge(node, property)
+					edge_attributes[(node, property)] = {'weight': 3, 'alpha': 0.0, 'beta': 1.0}
+				
 				nx.set_edge_attributes(graph, edge_attributes)
-				print(graph[node])
+				# print(graph[node])
 				# Finally append the node and its similar object, similarity_index used for adding edges
 				nodes_added[node] = (most_similar_object_name, similar_object[0])
 	
