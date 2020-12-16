@@ -220,6 +220,11 @@ def main():
 		if instinctive_reactions_for_given_level:
 			print("\nInstinctive Reactions for given level: \n", instinctive_reactions_for_given_level)
 
+	nodes_added = add_new_nodes_to_graph(list(not_in_graph_inputs), graph)
+	if nodes_added:
+		print("The following nodes were added into the knowledge graph using the given similarity:")
+		print(nodes_added)
+
 	if observations:
 		print("---------------------------------------------------")
 		print("Final Observations \n", observations)
@@ -233,11 +238,6 @@ def main():
 		print("---------------------------------------------------")
 		print("Final Object Recognized \n", object_recognized)
 	print("---------------------------------------------------")
-
-	nodes_added = add_new_nodes_to_graph(list(not_in_graph_inputs), graph)
-	if nodes_added:
-		print("The following nodes were added into the knowledge graph using the given similarity:")
-		print(nodes_added)
 
 
 if __name__ == "__main__":
