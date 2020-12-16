@@ -122,7 +122,7 @@ def cluster_input_based_on_senses(new_inputs, not_in_graph_inputs, input_set, gr
 		# Add the input to corresponding sensory input set
 		input_set[sense].append(new_inputs[i])
 
-def get_activations_and_arousals(input_set, object_recognitions_for_given_level, object_recognized, graph):
+def update_objects_recognized(input_set, object_recognitions_for_given_level, object_recognized, graph):
 	'''
 			for new_inputs check for dangling node
 			if dangling node add its parents to objects_recognized set
@@ -174,7 +174,7 @@ def main():
 		}
 		
 		cluster_input_based_on_senses(new_inputs, not_in_graph_inputs, input_set, graph)
-		get_activations_and_arousals(input_set, object_recognitions_for_given_level, object_recognized, graph)
+		update_objects_recognized(input_set, object_recognitions_for_given_level, object_recognized, graph)
 
 		# getting elements to be removed
 		elements_to_be_removed = []
