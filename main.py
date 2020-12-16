@@ -11,6 +11,29 @@ from global_repository import get_all_objects
 from build_knowledge_graph import KnowledgeGraph
 
 
+def add_new_nodes_to_graph(not_in_graph_inputs, graph):
+	nodes_added = {}
+	data = get_all_objects()
+	objects = data["objects"]
+	object_names = [preprocess_name(element["name"]) for element in objects]
+	for node in not_in_graph_inputs:
+		if node in object_names:
+			similar_objects = get_similar_elements(node)
+			if not similar_objects:
+				continue
+			most_similar_object = similar_objects[0]
+			most_similar_object_name = preprocess_name(most_similar_object[1]["name"])
+			graph.add_node(node)
+			successors = graph.successors(most_similar_object_name)
+			edge_attributes = {}
+			for successor in successors:
+				graph.add_edge(node, successor)
+				edge_attributes[(node, successor)] = graph.get_edge_data(most_similar_object_name, successor)
+			nx.set_edge_attributes(graph, edge_attributes)
+			nodes_added[node] = (most_similar_object_name, most_similar_object[0])
+	return nodes_added
+
+
 def main():
 	graph = KnowledgeGraph().build_graph()
 	instinctive_reactions = {}
@@ -152,30 +175,11 @@ def main():
 		print("Final Object Recognized \n", object_recognized)
 	print("---------------------------------------------------")
 
-	not_in_graph_inputs = list(not_in_graph_inputs)
-	nodes_added = {}
-	data = get_all_objects()
-	objects = data["objects"]
-	object_names = [preprocess_name(element["name"]) for element in objects]
-	for node in not_in_graph_inputs:
-		if node in object_names:
-			similar_objects = get_similar_elements(node)
-			if not similar_objects:
-				continue
-			most_similar_object = similar_objects[0]
-			most_similar_object_name = preprocess_name(most_similar_object[1]["name"])
-			graph.add_node(node)
-			successors = graph.successors(most_similar_object_name)
-			edge_attributes = {}
-			for successor in successors:
-				graph.add_edge(node, successor)
-				edge_attributes[(node, successor)] = graph.get_edge_data(most_similar_object_name, successor)
-			nx.set_edge_attributes(graph, edge_attributes)
-			nodes_added[node] = (most_similar_object_name, most_similar_object[0])
-	
+	nodes_added = add_new_nodes_to_graph(list(not_in_graph_inputs), graph)
 	if nodes_added:
 		print("The following nodes were added into the knowledge graph using the given similarity:")
 		print(nodes_added)
+
 
 if __name__ == "__main__":
 	main()
