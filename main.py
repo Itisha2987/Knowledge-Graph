@@ -12,6 +12,16 @@ from global_repository import get_properties_of_object
 from build_knowledge_graph import KnowledgeGraph
 
 
+def update_knowledge_graph_with_new_node_data(node, edge_data):
+	with open('edges.txt', 'a+') as edge_file:
+		for key in edge_data:
+			weight = edge_data[key]['weight']
+			alpha = edge_data[key]['alpha']
+			beta = edge_data[key]['beta']
+			edge_file.write(node + " " + key + " " + str(weight) + " " + str(alpha) + " " + str(beta) + "\n")
+	pass
+
+
 def remove_successors_that_are_property(successors, most_similar_object):
 	properties = get_properties_of_object(most_similar_object)
 	new_successors = []
@@ -84,7 +94,7 @@ def add_new_nodes_to_graph(not_in_graph_inputs, graph):
 					edge_attributes[(node, property)] = {'weight': 3, 'alpha': 0.0, 'beta': 1.0}
 				
 				nx.set_edge_attributes(graph, edge_attributes)
-				# print(graph[node])
+				update_knowledge_graph_with_new_node_data(node, graph[node])
 				# Finally append the node and its similar object, similarity_index used for adding edges
 				nodes_added[node] = (most_similar_object_name, similar_object[0])
 	
