@@ -63,6 +63,55 @@ def add_new_nodes_to_graph(not_in_graph_inputs, graph):
 	
 	return nodes_added
 
+def cluster_input_based_on_senses(new_inputs, not_in_graph_inputs, input_set, graph):
+	for i in range(len(new_inputs)):
+		# Input Format:
+		# T:hot:0.7 O:tangy_smell:0.7
+
+		# get the sense of input (V/T/O/G/A), intensity by splitting up
+		sense, new_input, intensity = new_inputs[i].split(':')
+		new_input = preprocess_name(new_input)
+		# Update new inputs by removing only sensory tags (still contains intensity value)
+		new_inputs[i] = new_input + ':' + intensity
+
+		if new_input not in graph:
+			not_in_graph_inputs.add(new_input)
+			continue
+			
+		if sense == 'V':
+			sense = "vision"
+		elif sense == 'T':
+			sense = "tactile"
+		elif sense == 'O':
+			sense = "olfactory"
+		elif sense == 'G':
+			sense = "gustatory"
+		elif sense == 'A':
+			sense = "auditory"
+		else:
+			print("!! Invalid Input given !!\n")
+			return
+
+		# Add the input to corresponding sensory input set
+		input_set[sense].append(new_inputs[i])
+
+def get_activations_and_arousals(input_set, object_recognitions_for_given_level, object_recognized, graph):
+	'''
+			for new_inputs check for dangling node
+			if dangling node add its parents to objects_recognized set
+	'''
+	for senses in input_set:
+		sensory_level_recognition = set()
+		if input_set[senses]:
+			for node in input_set[senses]:
+				if is_dangling_node(node, graph):
+					possible_recognitions = get_parent_nodes(node, graph)
+					sensory_level_recognition = get_intersection_set_of_recognitions(sensory_level_recognition, possible_recognitions)
+
+		object_recognitions_for_given_level.update(sensory_level_recognition)
+
+	# Update the object recognized
+	object_recognized.update(object_recognitions_for_given_level)
 
 def main():
 	graph = KnowledgeGraph().build_graph()
@@ -97,55 +146,8 @@ def main():
 			"vision": []
 		}
 		
-		for i in range(len(new_inputs)):
-			# Input Format:
-			# T:hot:0.7 O:tangy_smell:0.7
-
-			# get the sense of input (V/T/O/G/A), intensity by splitting up
-			sense, new_input, intensity = new_inputs[i].split(':')
-			new_input = preprocess_name(new_input)
-			# Update new inputs by removing only sensory tags (still contains intensity value)
-			new_inputs[i] = new_input + ':' + intensity
-
-			if new_input not in graph:
-				not_in_graph_inputs.add(new_input)
-				continue
-			
-			if sense == 'V':
-				sense = "vision"
-			elif sense == 'T':
-				sense = "tactile"
-			elif sense == 'O':
-				sense = "olfactory"
-			elif sense == 'G':
-				sense = "gustatory"
-			elif sense == 'A':
-				sense = "auditory"
-			else:
-				print("!! Invalid Input given !!\n")
-				return
-
-			# Add the input to corresponding sensory input set
-			input_set[sense].append(new_inputs[i])
-		
-
-		'''
-			for new_inputs check for dangling node
-			if dangling node add its parents to objects_recognized set
-		'''
-		for senses in input_set:
-			sensory_level_recognition = set()
-			if input_set[senses]:
-				for node in input_set[senses]:
-					if is_dangling_node(node, graph):
-						possible_recognitions = get_parent_nodes(node, graph)
-						sensory_level_recognition = get_intersection_set_of_recognitions(sensory_level_recognition, possible_recognitions)
-
-			object_recognitions_for_given_level.update(sensory_level_recognition)
-
-		# Update the object recognized
-		object_recognized.update(object_recognitions_for_given_level)
-
+		cluster_input_based_on_senses(new_inputs, not_in_graph_inputs, input_set, graph)
+		get_activations_and_arousals(input_set, object_recognitions_for_given_level, object_recognized, graph)
 
 		# getting elements to be removed
 		elements_to_be_removed = []
