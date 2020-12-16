@@ -12,25 +12,55 @@ from build_knowledge_graph import KnowledgeGraph
 
 
 def add_new_nodes_to_graph(not_in_graph_inputs, graph):
+	'''
+		Inputs:
+			-> not_in_graph_inputs: the set of inputs that were not in graph
+			-> graph: the knowledge graph used
+		
+		Returns:
+			-> nodes_added: the dictionary of node added as key
+							and the similar object used for adding edges with similarity index as value
+	'''
 	nodes_added = {}
 	data = get_all_objects()
+	
+	# Objects array
 	objects = data["objects"]
 	object_names = [preprocess_name(element["name"]) for element in objects]
+	
+	# Iterating through all inputs that are not in graph
 	for node in not_in_graph_inputs:
 		if node in object_names:
+			# implies the node is in global repository and not in KG
+			
 			similar_objects = get_similar_elements(node)
 			if not similar_objects:
 				continue
+			
 			most_similar_object = similar_objects[0]
+			# sample data: most_similar_object = (0.8, {"name": ...})
 			most_similar_object_name = preprocess_name(most_similar_object[1]["name"])
+			
+			# add the new node in the graph
 			graph.add_node(node)
+			
+			# get all successors of the already existing object
 			successors = graph.successors(most_similar_object_name)
+			
+			# edge_attributes to store the weight, alpha, beta values of the edge
 			edge_attributes = {}
 			for successor in successors:
+				# Add edge from new node to the successors
 				graph.add_edge(node, successor)
+
+				# Add edge_data to edge_attributes
 				edge_attributes[(node, successor)] = graph.get_edge_data(most_similar_object_name, successor)
+			
 			nx.set_edge_attributes(graph, edge_attributes)
+
+			# Finally append the node and its similar object, similarity_index used for adding edges
 			nodes_added[node] = (most_similar_object_name, most_similar_object[0])
+	
 	return nodes_added
 
 
