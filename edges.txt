@@ -25,9 +25,8 @@ has_something food_item 2 0 1
 has_something non_food_item 2 0 1
 tomato_soup liquid 3 0.4 1
 tomato_soup food_item 3 0 1
-tomato_soup has_tomatoes 3 0 1
 tomato_soup spicy 3 0.1 0.35
 tomato_soup tangy_smell 3 0.5 1
 tomato_soup tangy_taste 3 0.5 1
-has_tomatoes tangy_taste 2 0 1
+tomatoes tangy_taste 2 0 1
 tangy_taste spicy 2 0.5 1
