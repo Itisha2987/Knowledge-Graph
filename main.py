@@ -8,7 +8,19 @@ from util import get_intersection_set_of_recognitions
 from util import preprocess_name
 from similarity import get_similar_elements
 from global_repository import get_all_objects
+from global_repository import get_properties_of_object
 from build_knowledge_graph import KnowledgeGraph
+
+
+def remove_successors_that_are_property(successors, most_similar_object_name, objects):
+	properties = get_properties_of_object(most_similar_object_name, objects)
+	print(properties)
+	new_successors = []
+	for node in successors:
+		if node not in properties:
+			new_successors.append(node)
+	
+	return new_successors
 
 
 def add_new_nodes_to_graph(not_in_graph_inputs, graph):
@@ -37,29 +49,41 @@ def add_new_nodes_to_graph(not_in_graph_inputs, graph):
 			if not similar_objects:
 				continue
 			
-			most_similar_object = similar_objects[0]
-			# sample data: most_similar_object = (0.8, {"name": ...})
-			most_similar_object_name = preprocess_name(most_similar_object[1]["name"])
-			
-			# add the new node in the graph
-			graph.add_node(node)
-			
-			# get all successors of the already existing object
-			successors = graph.successors(most_similar_object_name)
-			
-			# edge_attributes to store the weight, alpha, beta values of the edge
-			edge_attributes = {}
-			for successor in successors:
-				# Add edge from new node to the successors
-				graph.add_edge(node, successor)
+			for similar_object in similar_objects:
+				# sample data: similar_object = (0.8, {"name": ...})
+				most_similar_object_name = preprocess_name(similar_object[1]["name"])
+				
+				# Check if the object is available in the graph
+				if most_similar_object_name not in graph:
+					continue
 
-				# Add edge_data to edge_attributes
-				edge_attributes[(node, successor)] = graph.get_edge_data(most_similar_object_name, successor)
-			
-			nx.set_edge_attributes(graph, edge_attributes)
+				# add the new node in the graph
+				graph.add_node(node)
+				
+				# get all successors of the already existing object
+				successors = graph.successors(most_similar_object_name)
 
-			# Finally append the node and its similar object, similarity_index used for adding edges
-			nodes_added[node] = (most_similar_object_name, most_similar_object[0])
+				successors = remove_successors_that_are_property(successors, most_similar_object_name, objects)
+				
+				# edge_attributes to store the weight, alpha, beta values of the edge
+				edge_attributes = {}
+				for successor in successors:
+					edge_data = graph.get_edge_data(most_similar_object_name, successor)
+
+					# skip if edge is inference
+					if edge_data["weight"] == 2:
+						continue
+					
+					# Add edge from new node to the successors
+					graph.add_edge(node, successor)
+
+					# Add edge_data to edge_attributes
+					edge_attributes[(node, successor)] = edge_data
+				
+				nx.set_edge_attributes(graph, edge_attributes)
+				
+				# Finally append the node and its similar object, similarity_index used for adding edges
+				nodes_added[node] = (most_similar_object_name, similar_object[0])
 	
 	return nodes_added
 
