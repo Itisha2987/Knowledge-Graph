@@ -21,6 +21,23 @@ class Object:
         return self.name
 
 
+def get_properties_of_object(object_name, objects):
+    properties = set()
+    object_data = {}
+    senses = ["tactile", "gustatory", "olfaction", "auditory", "vision"]
+    
+    for elem in objects:
+        if elem["name"]==object_name:
+                object_data = elem
+                break
+
+    for sense in senses:
+        for attribute in object_data[sense]:
+            properties.add(object_data[sense][attribute])
+    
+    return properties
+
+
 def get_all_objects():
     with open('global_repo.json') as json_file: 
         data = json.load(json_file) 
