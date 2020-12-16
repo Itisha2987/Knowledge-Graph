@@ -12,9 +12,8 @@ from global_repository import get_properties_of_object
 from build_knowledge_graph import KnowledgeGraph
 
 
-def remove_successors_that_are_property(successors, most_similar_object_name, objects):
-	properties = get_properties_of_object(most_similar_object_name, objects)
-	print(properties)
+def remove_successors_that_are_property(successors, most_similar_object):
+	properties = get_properties_of_object(most_similar_object)
 	new_successors = []
 	for node in successors:
 		if node not in properties:
@@ -63,7 +62,7 @@ def add_new_nodes_to_graph(not_in_graph_inputs, graph):
 				# get all successors of the already existing object
 				successors = graph.successors(most_similar_object_name)
 
-				successors = remove_successors_that_are_property(successors, most_similar_object_name, objects)
+				successors = remove_successors_that_are_property(successors, similar_object[1])
 				
 				# edge_attributes to store the weight, alpha, beta values of the edge
 				edge_attributes = {}
@@ -81,7 +80,7 @@ def add_new_nodes_to_graph(not_in_graph_inputs, graph):
 					edge_attributes[(node, successor)] = edge_data
 				
 				nx.set_edge_attributes(graph, edge_attributes)
-				
+				print(graph[node])
 				# Finally append the node and its similar object, similarity_index used for adding edges
 				nodes_added[node] = (most_similar_object_name, similar_object[0])
 	
