@@ -100,6 +100,7 @@ def add_new_nodes_to_graph(not_in_graph_inputs, graph):
 	
 	return nodes_added
 
+
 def cluster_input_based_on_senses(new_inputs, not_in_graph_inputs, input_set, graph):
 	for i in range(len(new_inputs)):
 		# Input Format:
@@ -132,6 +133,7 @@ def cluster_input_based_on_senses(new_inputs, not_in_graph_inputs, input_set, gr
 		# Add the input to corresponding sensory input set
 		input_set[sense].append(new_inputs[i])
 
+
 def update_objects_recognized(input_set, object_recognitions_for_given_level, object_recognized, graph):
 	'''
 			for new_inputs check for dangling node
@@ -149,6 +151,22 @@ def update_objects_recognized(input_set, object_recognitions_for_given_level, ob
 
 	# Update the object recognized
 	object_recognized.update(object_recognitions_for_given_level)
+
+
+def get_activations_and_observations(inputs, instinctive_reactions_for_given_level, instinctive_reactions, observations_for_given_level, graph):
+	# For each input get activations, observations
+	for sensory_input in inputs:
+
+		# Activations
+		activations = get_instinctive_activations(sensory_input, graph)
+		instinctive_reactions_for_given_level.update(activations)
+		instinctive_reactions.update(activations)
+
+		# Observations
+		raised_observations = get_observations(sensory_input, graph)
+		observations_for_given_level.update(raised_observations)
+	pass
+
 
 def main():
 	graph = KnowledgeGraph().build_graph()
@@ -200,17 +218,7 @@ def main():
 		# adding new user inputs in inputs set
 		inputs.extend(new_inputs)
 
-		# For each input get activations, observations and predictions
-		for sensory_input in inputs:
-
-			# Activations
-			activations = get_instinctive_activations(sensory_input, graph)
-			instinctive_reactions_for_given_level.update(activations)
-			instinctive_reactions.update(activations)
-
-			# Observations
-			raised_observations = get_observations(sensory_input, graph)
-			observations_for_given_level.update(raised_observations)
+		get_activations_and_observations(inputs, instinctive_reactions_for_given_level, instinctive_reactions, observations_for_given_level, graph)
 
 		# Adding old observations to input set
 		# TODO. Need to figure out proper way for appending threshold value
