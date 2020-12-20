@@ -1,5 +1,5 @@
-def preprocess_input(sensory_input):
-    return sensory_input.lower().replace(' ', '_')
+def preprocess_name(name):
+    return name.lower().replace(' ', '_')
 
 
 def lie_within_the_range(intensity,head,tail,graph):

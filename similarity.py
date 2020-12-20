@@ -1,3 +1,4 @@
+import operator
 from global_repository import get_all_objects
 from global_repository import get_object_data_through_name
 
@@ -23,7 +24,7 @@ def get_similarity_index(old_object, new_object):
     similarity_index = float(common_attributes/total_attributes)
     return similarity_index
 
-def get_most_similar_element(new_object_name):
+def get_similar_elements(new_object_name):
     data = get_all_objects()
     objects = data['objects']
     new_object = get_object_data_through_name(new_object_name)
@@ -32,13 +33,13 @@ def get_most_similar_element(new_object_name):
         similarity = get_similarity_index(element, new_object)
         if similarity >= 0.75 and similarity!=1:
             similar_elements.append((similarity, element))
-
+    similar_elements.sort(key=operator.itemgetter(0), reverse=True)
     return similar_elements
 
-#Sample Usage
+# Sample Usage
 # def main():
 #    new_object_name = input("Enter new object name: ")
-#    print(get_most_similar_element(new_object_name))
+#    print(get_similar_elements(new_object_name))
 
-#if __name__ == "__main__":
+# if __name__ == "__main__":
 #    main()
